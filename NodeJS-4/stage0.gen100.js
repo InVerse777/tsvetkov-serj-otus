@@ -7,11 +7,11 @@ const sizeInBytes = 100 * 1024 * 1024; //100Mb
 
 class generatorReader extends Readable {
   constructor(writer, maxRange, sizeInBytes, opt) {
+
     super(opt);
 
     this._maxRange = maxRange;
     this._sizeInBytes = sizeInBytes;
-    this.writer = writer;
   }
 
   _read() {
@@ -24,7 +24,7 @@ class generatorReader extends Readable {
   }
 }
 const writer = fs.createWriteStream(fileName, {
-  highWaterMark: 16384,
+  highWaterMark: 16384, //16384 is the default value
   encoding: "utf8",
 });
 const readerGenerator = new generatorReader(writer, maxRange, sizeInBytes);

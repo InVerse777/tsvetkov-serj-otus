@@ -1,13 +1,12 @@
-function publishComment(lesson_id) {
+function publishComment(lessonId) {
   const ct = document.getElementById("commentText").value;
-  fetch(`/comment/${lesson_id}`, {
+  fetch(`/comment/${lessonId}`, {
     method: "POST",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-
       commentText: ct,
     }),
   })
@@ -21,8 +20,8 @@ function publishComment(lesson_id) {
     });
 }
 
-function revokeAccess(course_id, userName) {
-  fetch(`/course/access/${course_id}`, {
+function revokeAccess(courseId, userName) {
+  fetch(`/course/access/${courseId}`, {
     method: "DELETE",
     headers: {
       Accept: "application/json",
@@ -36,10 +35,9 @@ function revokeAccess(course_id, userName) {
     .then((response) => response.json())
     .then((response) => window.location.reload());
 }
-function grantAccess(course_id) {
+function grantAccess(courseId) {
   const un = document.getElementById("username").value;
-  console.log(`Username:${un}`);
-  fetch(`/course/access/${course_id}`, {
+  fetch(`/course/access/${courseId}`, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -102,7 +100,6 @@ function editCourse(id) {
   })
     .then((response) => response.json())
     .then((response) => {
-      console.log(response);
       const myModalEl = document.getElementById("editCourseModal");
       var modal = bootstrap.Modal.getInstance(myModalEl);
       modal.hide();
@@ -110,11 +107,11 @@ function editCourse(id) {
       document.getElementById("dsc").innerText = cd;
     });
 }
-function addResource(lesson_id) {
+function addResource(lessonId) {
   const vt = document.getElementById("fnltype").value;
   const lnk = document.getElementById("rslink").value;
   const desc = document.getElementById("fileDescription").value;
-  fetch(`/resource/${lesson_id}`, {
+  fetch(`/resource/${lessonId}`, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -140,15 +137,15 @@ function addResource(lesson_id) {
 function addLesson(id) {
   const lt = document.getElementById("lessonTitle").value;
   const ld = document.getElementById("lessonDescription").value;
-  course_id = fetch(`/lesson/${id}`, {
+  fetch(`/lesson/${id}`, {
     method: "POST",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      "lessonTitle": lt,
-      "lessonDescription": ld,
+      lessonTitle: lt,
+      lessonDescription: ld
     }),
   })
     .then((response) => response.json())

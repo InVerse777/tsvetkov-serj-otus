@@ -1,5 +1,6 @@
-const { Schema, model } = require("../db/connection");
-
+import mongoose from "../db/connection.js";
+const Schema = mongoose.Schema;
+const model = mongoose.model;
 // User Schema
 const UserSchema = new Schema({
   username: { type: String, unique: true, required: true },
@@ -10,4 +11,4 @@ const UserSchema = new Schema({
 // User model
 const User = model("User", UserSchema);
 
-module.exports = User;
+export default User;

@@ -1,25 +1,9 @@
-const express = require("express");
+import express from "express";
+import * as CoursesController from "../controllers/courses.controller.js";
+import { isLoggedIn, getUser } from "../controllers/auth.middleware.js";
 const router = express.Router();
-const Courses= require("../models/Courses")
-const { getUser } = require("../controller/auth.middleware");
-router.get("/", (req, res) => {
-  res.render("courses", { title: "WebCourseware. Courses" });
-});
- 
+router.get("/", getUser, await CoursesController.renderCoursesPage);
 
-router.get("/courses", getUser, async (req, res) => {
-  try{
-    const coursesList = await Courses.find({})
-   // res.json(coursesList)
-  const userStr = req.user? req.user.username: "Anonymous user"
-  console.log(userStr)
-  res.render("courses", { title: "WebCourseware. Courses", courses: coursesList, user: userStr});
-} catch(error){
-  res.status(400).json({error});
-}
-  //res.status(200).end();
-});
+router.get("/courses", getUser, await CoursesController.renderCoursesPage);
 
-
-
-module.exports = router;
+export default router;

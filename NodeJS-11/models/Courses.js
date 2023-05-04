@@ -1,6 +1,7 @@
-const { Schema, model } = require("../db/connection");
+import mongoose from "../db/connection.js";
+const Schema = mongoose.Schema;
+const model = mongoose.model;
 
-// User Schema
 const CoursesSchema = new Schema({
   courseCreator: { type: String, required: true },
   courseTitle: { type: String, unique: true, required: true },
@@ -25,7 +26,6 @@ const CoursesSchema = new Schema({
   accessGrantedTo: [{ userName: String }],
 });
 
-// User model
 const Courses = model("Courses", CoursesSchema);
 
-module.exports = Courses;
+export default Courses;

@@ -1,0 +1,80 @@
+extends default
+
+mixin lessonMxn(lsn)
+  .list-grouplist-group-item.list-group-item-action.d-flex.gap-3.py-3(id=lsn._id)
+    a(href='/lesson/'+lsn._id aria-current='true')
+      .d-flex.gap-2.w-200.justify-content-between
+          div
+            h6.mb-0=lsn.lessonTitle
+            p.mb-0.opacity-75=lsn.lessonDescription
+    if isCreator
+      button.btn.btn-danger.d-flex.gap-3(type="button" onClick=`removeLesson("${lsn._id}")`) x 
+    
+
+
+
+block content
+  .modal#editCourseModal(tabindex='-1')
+    .modal-dialog
+      .modal-content
+        .modal-header
+          h5.modal-title Edir Course
+          button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+        .modal-body
+          p Course title:
+          input#courseTitle(type="text" value=course.courseTitle)
+          p course description: 
+          input#courseDescription(type="text" value=course.courseDescription)
+        .modal-footer
+          button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
+          button.btn.btn-primary(type='button' onClick=`editCourse("${course._id}")`) Save changes
+  .modal#addLessonModal(tabindex='-2')
+    .modal-dialog
+      .modal-content
+        .modal-header
+          h5.modal-title Add Lesson
+          button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+        .modal-body
+          p Lesson title:
+          input#lessonTitle(type="text")
+          p Lesson description: 
+          input#lessonDescription(type="text")
+        .modal-footer
+          button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
+          button.btn.btn-primary(type='button' onClick=`addLesson("${course._id}")`) Save changes
+  .modal#grantAccess(tabindex='-3')
+    .modal-dialog
+      .modal-content
+        .modal-header
+          h5.modal-title Grant Access
+          button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+        .modal-body
+          p Username:
+          input#username(type="text")
+        .modal-footer
+          button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
+          button.btn.btn-primary(type='button' onClick=`grantAccess("${course._id}")`) Grant
+  .menu 
+    .menuItem
+        a(href="../courses") Courses
+  h1#ttl=course.courseTitle
+  p#dsc=course.courseDescription
+  .buttons 
+    if isCreator
+      button.btn.btn-primary(type="button" data-bs-toggle="modal" data-bs-target="#editCourseModal") +Edit course
+      button.btn.btn-primary(type="button" data-bs-toggle="modal" data-bs-target="#addLessonModal") +Add lesson
+      button.btn.btn-primary(type="button" data-bs-toggle="modal" data-bs-target="#grantAccess") +Grant Access
+  if isCreator
+    .accessGranted
+      p Access granted to:
+      .users
+        each usr in course.accessGrantedTo
+          .usrContainer.float-left.d-inline
+            .usrName.float-left.d-inline=usr.userName
+            button.btn.btn-danger.gap-0.p-1.float-left.d-inline( type="button" display='inline' onClick=`revokeAccess("${course._id}","${usr.userName}")`) x 
+      hr
+  .lessons.d-flex.flex-column.flex-md-row.p-4.gap-4.py-md-5.align-items-center.justify-content-center
+    .list-group
+      each lsn, index in course.lessons
+        +lessonMxn(lsn)
+  

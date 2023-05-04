@@ -1,0 +1,64 @@
+extends default
+
+block additionalImports
+
+
+block content
+  .modal#addResourceModal(tabindex='-2')
+    .modal-dialog
+      .modal-content
+        .modal-header
+          h5.modal-title Add resource
+          button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+        .modal-body
+          p Resource type
+          select.form-select#fnltype(aria-label='Default select example')
+            option(selected='') Please select resource type
+            option(value='video') video
+            option(value='link') link
+          p Resource path/link:
+          input#rslink(type="text" )
+          p Resource description: 
+          input#fileDescription(type="text")
+        .modal-footer
+          button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
+          button.btn.btn-primary(type='button' onClick=`addResource("${lesson._id}")`) Save
+  .modal#commentModal(tabindex='-1')
+    .modal-dialog
+      .modal-content
+        .modal-header
+          h5.modal-title Add comment
+          button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+        .modal-body
+          p Write your comment here:
+          textarea#commentText(rows=5)
+        .modal-footer
+          button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
+          button.btn.btn-primary(type='button' onClick=`publishComment("${lesson._id}")`) Save
+  .menu 
+    .menuItem
+        a(href="./courses") Courses
+    .menuItem 
+        a(href="./course?id="+cid)=cname
+  h1=lesson.lessonTitle
+  p=lesson.lessonDescription
+  if isCreator
+    .buttons
+      button.btn.btn-primary(type="button" data-bs-toggle="modal" data-bs-target="#addResourceModal") +Add resource
+  each rs, index in lesson.lessonFilesNLinks
+    if rs.fnltype === 'video'
+      video(controls width='80%')
+        source(src=rs.rLink)
+    else if rs.fnltype === 'link'
+      p
+      a(href=rs.rLink)=rs.fileDescription
+  h3 Comments: 
+  hr 
+  .comments
+  button.btn.btn-primary(type="button" data-bs-toggle="modal" data-bs-target="#commentModal") +Add comment
+  each comment in lesson.comments
+    .comment 
+      .author=comment.commentAuthor
+      .text=comment.commentText
+      .date=comment.commentDate.toISOString().split('T')[0]
+      hr

@@ -4,7 +4,7 @@ import fs from "node:fs/promises";
 import prompt from "prompt";
 import * as schemas from "../schemas.js";
 import { promisify } from "util";
-import { URL } from "url";
+import { URL }  from "url";
 import path from "node:path";
 const get = promisify(prompt.get);
 

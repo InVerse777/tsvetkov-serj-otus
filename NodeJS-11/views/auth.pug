@@ -1,0 +1,19 @@
+extends default
+block additionalImports
+    link(rel='stylesheet' type='text/css' href='/scss/login.css')
+
+block content
+    script(src='/sjs/auth.js')
+    main.form-signin.w-100.m-auto
+        form
+            p#commentx
+            //img.mb-4(src='/docs/5.3/assets/brand/bootstrap-logo.svg' alt='' width='72' height='57')
+            h1.h3.mb-3.fw-normal Please sign in
+            .form-floating
+                input#floatingInput.form-control(type='text' placeholder='name')
+                label(for='floatingInput') Email address
+            .form-floating
+                input#floatingPassword.form-control(type='password' placeholder='Password')
+                label(for='floatingPassword') Password
+            button#authbtn.w-100.btn.btn-lg.btn-primary(type='button' onClick='sendAuthReq()') Sign in
+            p.mt-5.mb-3.text-body-secondary &copy;2023

@@ -1,0 +1,45 @@
+extends default
+
+mixin courseMxn(c)
+  .list-grouplist-group-item.list-group-item-action.d-flex.gap-3.py-3.w-200(id=c._id)
+    a(href='/course/'+c._id aria-current='true' )
+      .d-flex.gap-2.w-200.justify-content-between
+          div
+            h6.mb-0=c.courseTitle
+            p.mb-0.opacity-75=c.courseDescription
+          small.opacity-50.text-nowrap=c.courseCreator+'/'+c.publishDate.toISOString().split('T')[0]
+    if user===c.courseCreator
+      button.btn.btn-danger.d-flex.gap-3(type="button" onClick=`removeCourse("${c._id}")`) x 
+    
+
+block additionalImports
+  link(rel='stylesheet' type='text/css' href='/scss/listgroup.css')
+
+block content
+  .modal#addCourseModal(tabindex='-1')
+    .modal-dialog
+      .modal-content
+        .modal-header
+          h5.modal-title Add Course
+          button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+        .modal-body
+          p Course title:
+          input#courseTitle(type="text")
+          p course description: 
+          input#courseDescription(type="text")
+        .modal-footer
+          button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
+          button.btn.btn-primary(type='button' onClick="publishCourse()") Save changes
+  h1 COURSES website
+  p.
+    You can add a course!!! 
+    Feel free to navigate!!!
+  .buttons
+    button.btn.btn-primary(type="button" data-bs-toggle="modal" data-bs-target="#addCourseModal") +Add course
+  .courses.d-flex.flex-column.flex-md-row.p-4.gap-4.py-md-5.align-items-center.justify-content-center
+    .list-group
+      each crs, index in courses
+        +courseMxn(crs)
+
+
+  

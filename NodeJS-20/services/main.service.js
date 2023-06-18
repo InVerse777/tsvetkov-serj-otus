@@ -4,7 +4,7 @@ import fs from "node:fs/promises";
 import prompt from "prompt";
 import * as schemas from "../schemas.js";
 import { promisify } from "util";
-import { URL }  from "url";
+import { URL } from "url";
 import path from "node:path";
 const get = promisify(prompt.get);
 
@@ -49,7 +49,7 @@ export const login = async function (options) {
 export const addCourse = async function () {
   try {
     prompt.start();
-    const result = get(schemas.course);
+    const result = await get(schemas.course);
     const response = await axiosInstance.post(`/course`, {
       courseTitle: result.courseTitle,
       courseDescription: result.courseDescription,
@@ -120,7 +120,7 @@ export const editLesson = async function (options) {
         dLesson.data.lessonDescription;
       editLessonSchema.properties.lessonTitle.default =
         dLesson.data.lessonTitle;
-      const postResponse = await prompt.get(editLessonSchema);
+      const postResponse = await get(editLessonSchema);
       const response = await axiosInstance.patch(`/lesson/${courseId}`, {
         _id: result._id,
         lessonTitle: postResponse.lessonTitle,
@@ -149,7 +149,7 @@ export const addLesson = async function (options) {
     const course = await axiosInstance.get(`/coursej/${courseId}`);
     if (course) {
       prompt.start();
-      const result = prompt.get(schemas.lesson);
+      const result = await get(schemas.lesson);
       const response = await axiosInstance.post(`/lesson/${courseId}`, {
         lessonTitle: result.lessonTitle,
         lessonDescription: result.lessonDescription,
@@ -186,7 +186,7 @@ export const editResource = async function (options) {
       curResource.data.fileDescription;
     modResourceSchema.properties.rLink.default = curResource.data.rLink;
     prompt.start();
-    const results = await prompt.get(modResourceSchema);
+    const results = await get(modResourceSchema);
     const response = await axiosInstance.patch(
       `/resource/${lessonId}/${resourceId}`,
       {
@@ -206,7 +206,7 @@ export const addResource = async function (options) {
   try {
     const { lessonId } = options;
     prompt.start();
-    const results = await prompt.get(schemas.resource);
+    const results = await get(schemas.resource);
     const response = await axiosInstance.post(`/resource/${lessonId}`, {
       fnltype: results.fnltype,
       fileDescription: results.fileDescription,
@@ -241,7 +241,7 @@ export const editComment = async function (options) {
     modCommentSchema.properties.commentText.default =
       curComment.data.commentText;
     prompt.start();
-    const results = await prompt.get(modCommentSchema);
+    const results = await get(modCommentSchema);
     const response = await axiosInstance.patch(
       `/comment/${lessonId}/${commentId}`,
       {
@@ -259,7 +259,7 @@ export const addComment = async function (options) {
   try {
     const { lessonId } = options;
     prompt.start();
-    const results = await prompt.get(schemas.comment);
+    const results = await get(schemas.comment);
     const response = await axiosInstance.post(`/comment/${lessonId}`, {
       commentText: results.commentText,
     });
@@ -273,6 +273,6 @@ const logResponse = function (response) {
   if (response.status === 200) {
     console.log(response.data);
   } else {
-    console.log(`Something went wrong returned ${response.data}`);
+    console.log(`Something went wrong, returned ${response.data}`);
   }
 };
